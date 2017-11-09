@@ -13,4 +13,6 @@ struct Restaurant {
     var address : String!
     var kind : String!
     var image : String!
+    var reviewImage: String!
+    var reviewCount: String!
 }

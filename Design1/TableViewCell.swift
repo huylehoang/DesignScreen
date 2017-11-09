@@ -10,6 +10,8 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
 
+    @IBOutlet weak var ReviewCount: UILabel!
+    @IBOutlet weak var ReviewImage: UIImageView!
     @IBOutlet weak var Kinds: UILabel!
     @IBOutlet weak var Address: UILabel!
     @IBOutlet weak var Reviews: UILabel!

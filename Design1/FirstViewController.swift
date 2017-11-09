@@ -9,14 +9,14 @@
 import UIKit
 import AFNetworking
 import BDBOAuth1Manager
-class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, Delegate {
+class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
 
     @IBOutlet weak var tableView: UITableView!
     
     var restaurants:[Restaurant] = []
     
     var businesses: [Business]!
-    
+
     let searchController = UISearchController(searchResultsController: nil)
     
     var filteredArray:[Restaurant] = []
@@ -25,16 +25,34 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        
         Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
+            
+            var newRestaurants = [Restaurant]()
+            
             if let businesses = businesses {
                 for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
+                    
+                    let imageURL = business.imageURL!
+                    
+                    let image = "\(imageURL)"
+                    
+                    let reviewImageURL = business.ratingImageURL!
+                    
+                    let reviewImage = "\(reviewImageURL)"
+                    
+                    let reviewCount = business.reviewCount!
+                    
+                    let reviewCountString = String(describing: reviewCount) + " Reviews"
+                    
+                    newRestaurants.append(Restaurant(name: business.name!, address: business.address!, kind: business.categories, image: image, reviewImage: reviewImage, reviewCount: reviewCountString))
+                    
                 }
             }
+            
+            self.restaurants = newRestaurants
+            self.tableView.reloadData()
             
         }
         )
@@ -47,11 +65,6 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func didReceiveData(data: [Restaurant]) {
-        self.restaurants = data
-        self.tableView.reloadData()
     }
     
     func filterContentForSearchText (searchText: String) {
@@ -84,6 +97,15 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         cell.Address.text = self.restaurants[indexPath.row].address
         cell.Kinds.text = self.restaurants[indexPath.row].kind
+        cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
+        
+        let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
+        
+        if reviewImgURL != nil {
+            let data = NSData(contentsOf: (reviewImgURL as? URL)!)
+            cell.ReviewImage.image = UIImage(data: data as! Data)
+        }
+        
         let imgURL = NSURL(string: self.restaurants[indexPath.row].image)
         
         if imgURL != nil {
