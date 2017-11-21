@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1044F08D1FB0DE5800150F8D /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1044F08C1FB0DE5800150F8D /* Restaurant.swift */; };
 		10B8E74F1F9D158B0062E80F /* YelpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B8E74E1F9D158B0062E80F /* YelpClient.swift */; };
+		10D30CAF1FC498150082F70A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D30CAE1FC498150082F70A /* FilterViewController.swift */; };
+		10D30CB11FC499FC0082F70A /* DropBoxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D30CB01FC499FC0082F70A /* DropBoxTableViewCell.swift */; };
 		10F2E8161F80127400B959CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F2E8151F80127400B959CE /* AppDelegate.swift */; };
 		10F2E81B1F80127400B959CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10F2E8191F80127400B959CE /* Main.storyboard */; };
 		10F2E81D1F80127400B959CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10F2E81C1F80127400B959CE /* Assets.xcassets */; };
@@ -43,6 +45,8 @@
 /* Begin PBXFileReference section */
 		1044F08C1FB0DE5800150F8D /* Restaurant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		10B8E74E1F9D158B0062E80F /* YelpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YelpClient.swift; sourceTree = "<group>"; };
+		10D30CAE1FC498150082F70A /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		10D30CB01FC499FC0082F70A /* DropBoxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropBoxTableViewCell.swift; sourceTree = "<group>"; };
 		10F2E8121F80127400B959CE /* Design1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Design1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10F2E8151F80127400B959CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		10F2E81A1F80127400B959CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 				10FEB2331F9D0ECF0092724D /* Business.swift */,
 				10B8E74E1F9D158B0062E80F /* YelpClient.swift */,
 				1044F08C1FB0DE5800150F8D /* Restaurant.swift */,
+				10D30CAE1FC498150082F70A /* FilterViewController.swift */,
+				10D30CB01FC499FC0082F70A /* DropBoxTableViewCell.swift */,
 			);
 			path = Design1;
 			sourceTree = "<group>";
@@ -472,11 +478,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10D30CAF1FC498150082F70A /* FilterViewController.swift in Sources */,
 				10B8E74F1F9D158B0062E80F /* YelpClient.swift in Sources */,
 				10F2E8461F801D0900B959CE /* FirstViewController.swift in Sources */,
 				1044F08D1FB0DE5800150F8D /* Restaurant.swift in Sources */,
 				10F2E8441F8018D400B959CE /* TableViewCell.swift in Sources */,
 				10FEB2341F9D0ECF0092724D /* Business.swift in Sources */,
+				10D30CB11FC499FC0082F70A /* DropBoxTableViewCell.swift in Sources */,
 				10F2E8161F80127400B959CE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
