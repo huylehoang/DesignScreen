@@ -13,7 +13,14 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
 
 
     @IBOutlet weak var tableView: UITableView!
-    let sectionName = ["Offering","Distance","Distance Dropdown","Sort By","Sort By Dropdown","Category","Category Dropdown","See All"]
+    let sectionName = ["Offering",
+                       "Distance",
+                       "Distance Dropdown",
+                       "Sort By",
+                       "Sort By Dropdown",
+                       "Category",
+                       "Category Dropdown",
+                       "See All"]
 
     let arrayOption = [["Offering A Deal"],
                        ["Auto"],
@@ -62,6 +69,10 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             return 0
         }
         return 47.0
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        (view as! UITableViewHeaderFooterView).backgroundView?.backgroundColor = UIColor.white
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
