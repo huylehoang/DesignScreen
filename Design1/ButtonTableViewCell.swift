@@ -1,16 +1,16 @@
 //
-//  DropBoxTableViewCell.swift
+//  ButtonTableViewCell.swift
 //  Design1
 //
-//  Created by LeeX on 11/22/17.
-//  Copyright © 2017 LeeX. All rights reserved.
+//  Created by LeeX on 1/14/18.
+//  Copyright © 2018 LeeX. All rights reserved.
 //
 
 import UIKit
 
-class DropBoxTableViewCell: UITableViewCell {
+class ButtonTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var myLabel: UILabel!
+    @IBOutlet weak var buttonLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
