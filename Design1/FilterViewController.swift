@@ -10,30 +10,24 @@ import UIKit
 
 class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-
-
     @IBOutlet weak var tableView: UITableView!
-    let sectionName = ["Offering",
-                       "Distance",
-                       "Distance Dropdown",
-                       "Sort By",
-                       "Sort By Dropdown",
-                       "Category",
-                       "Category Dropdown",
-                       "See All"]
+    let sectionName = ["Offering","Distance","Sort By","Category","See All"]
 
-    let arrayOption = [["Offering A Deal"],
-                       ["Auto"],
-                       ["0.3 miles","1 mile","5 miles","20 mile"],
-                       ["Best Match"],
-                       ["Match 1","Match 2"],
-                       ["Afgan","African","American(New)"],
-                       ["American(Traditional)","Chinese","Italian","Vietnamese"],
-                       ["See All"]]
+    let offeringArray = ["Offering A Deal"]
+    
+    let distanceArray = ["Auto","0.3 miles","1 mile","5 miles","20 mile"]
+    
+    let sortByArray = ["Best Match","Match 1","Match 2"]
+    
+    let categoryArray = ["Afgan","African","American(New)","American(Traditional)","Chinese","Italian",
+                         "Vietnamese"]
+    
+    let seeAllArray = ["See All"]
     
     var distanceDropDown = false
     var sortByDropDown = false
     var categoryDropDown = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -53,19 +47,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (section == 0) {
-            return 0
-        }
-        if (section == 2) {
-            return 0
-        }
-        if (section == 4) {
-            return 0
-        }
-        if (section == 6) {
-            return 0
-        }
-        if (section == 7) {
+        if section == 0 || section == 4{
             return 0
         }
         return 47.0
@@ -80,52 +62,58 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.arrayOption[section].count
+        switch (section) {
+        case 0:
+            return offeringArray.count
+        case 1:
+            return distanceArray.count
+        case 2:
+            return sortByArray.count
+        case 3:
+            return categoryArray.count
+        default:
+            return seeAllArray.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sectionName[indexPath.section]
-        if section == sectionName[0] {
+        switch section {
+        case sectionName[0]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell") as! SwitchTableViewCell
-            cell.switchLabel?.text = self.arrayOption[indexPath.section][indexPath.row]
+            cell.switchLabel?.text = self.offeringArray[indexPath.row]
             return cell
-        }
-        if section == sectionName[1] {
+        case sectionName[1]:
+            if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "dropCell") as! DropTableViewCell
-                cell.dropLabel?.text = self.arrayOption[indexPath.section][indexPath.row]
+                cell.dropLabel?.text = self.distanceArray[indexPath.row]
                 return cell
-        }
-        if section == sectionName[2] {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "circleCell") as! CircleTableViewCell
-            cell.circleLabel?.text = self.arrayOption[indexPath.section][indexPath.row]
-            return cell
-        }
-        if section == sectionName[3] {
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "circleCell") as! CircleTableViewCell
+                cell.circleLabel?.text = self.distanceArray[indexPath.row]
+                return cell
+            }
+        case sectionName[2]:
+            if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "dropCell") as! DropTableViewCell
-                cell.dropLabel?.text = self.arrayOption[indexPath.section][indexPath.row]
+                cell.dropLabel?.text = self.sortByArray[indexPath.row]
                 return cell
-        }
-        if section == sectionName[4] {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "circleCell") as! CircleTableViewCell
-            cell.circleLabel?.text = self.arrayOption[indexPath.section][indexPath.row]
-            return cell
-        }
-        if section == sectionName[5] {
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "circleCell") as! CircleTableViewCell
+                cell.circleLabel?.text = self.sortByArray[indexPath.row]
+                return cell
+            }
+        case sectionName[3]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell") as! SwitchTableViewCell
-            cell.switchLabel?.text = self.arrayOption[indexPath.section][indexPath.row]
+            cell.switchLabel?.text = self.categoryArray[indexPath.row]
             return cell
-        }
-        if section == sectionName[6] {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell") as! SwitchTableViewCell
-            cell.switchLabel?.text = self.arrayOption[indexPath.section][indexPath.row]
-            return cell
-        }
-        if section == sectionName[7] {
+        case sectionName[4]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "buttonCell") as! ButtonTableViewCell
-            cell.buttonLabel?.text = self.arrayOption[indexPath.section][indexPath.row]
+            cell.buttonLabel?.text = self.seeAllArray[indexPath.row]
             return cell
+        default:
+            return UITableViewCell()
         }
-        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -134,11 +122,11 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             distanceDropDown = !distanceDropDown
             tableView.reloadData()
         }
-        if indexPath.row == 0 && indexPath.section == 3{
+        if indexPath.row == 0 && indexPath.section == 2{
             sortByDropDown = !sortByDropDown
             tableView.reloadData()
         }
-        if indexPath.row == 0 && indexPath.section == 7{
+        if indexPath.row == 0 && indexPath.section == 4{
             categoryDropDown = !categoryDropDown
             tableView.reloadData()
         }
@@ -148,25 +136,28 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if case indexPath.section = 2{
-            if distanceDropDown == false {
-                return 0.0
+        switch indexPath.section {
+        case 1:
+            if distanceDropDown {
+                return 47
+            } else {
+                return indexPath.row == 0 ? 47 : 0
             }
+        case 2:
+            if sortByDropDown {
+                return 47
+            } else {
+                return indexPath.row == 0 ? 47 : 0
+            }
+        case 3:
+            if categoryDropDown {
+                return 47
+            } else {
+                return (indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 2) ? 47 : 0
+            }
+        default:
             return 47
         }
-        if case indexPath.section = 4 {
-            if sortByDropDown == false {
-                return 0.0
-            }
-            return 47
-        }
-        if case indexPath.section = 6 {
-            if categoryDropDown == false {
-                return 0.0
-            }
-            return 47
-        }
-        return 47
     }
     
 }
