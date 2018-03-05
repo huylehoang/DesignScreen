@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     let sectionName = ["Offering","Distance","Sort By","Category","See All"]
@@ -19,8 +19,8 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     let sortByArray = ["Best Match","Match 1","Match 2"]
     
-    let categoryArray = ["Afgan","African","American(New)","American(Traditional)","Chinese","Italian",
-                         "Vietnamese"]
+    let categoryArray = ["Afgan","African","American(New)","American(Traditional)","Thai","Desserts",
+                         "Seafood"]
     
     let seeAllArray = ["See All"]
     
@@ -105,6 +105,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             }
         case sectionName[3]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell") as! SwitchTableViewCell
+            cell.delegate = self
             cell.switchLabel?.text = self.categoryArray[indexPath.row]
             return cell
         case sectionName[4]:
@@ -158,6 +159,17 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         default:
             return 47
         }
+    }
+    
+    func mySwitchTapped(cell: SwitchTableViewCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell as UITableViewCell) else {
+            // Note, this shouldn't happen - how did the user tap on a button that wasn't on screen?
+            return
+        }
+        
+        //  Do whatever you need to do with the indexPath
+        
+        print("Button tapped on row \(indexPath.row)")
     }
     
 }

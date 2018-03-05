@@ -9,7 +9,8 @@
 import UIKit
 import AFNetworking
 import BDBOAuth1Manager
-class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
+
+class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, SwitchLabelDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -20,6 +21,8 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     let searchController = UISearchController(searchResultsController: nil)
     
     var filteredArray:[Restaurant] = []
+    
+    var switchLabel:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +79,8 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchText: searchController.searchBar.text!)
+//        filterContentForSearchText(searchText: searchController.searchBar.text!)
+        filterContentForSearchText(searchText: switchLabel)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -113,6 +117,10 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
             cell.restaurantImage.image = UIImage(data: data as! Data)
         }
         return cell
+    }
+    
+    func didReveiText(text: String) {
+        self.switchLabel = text
     }
 }
 
