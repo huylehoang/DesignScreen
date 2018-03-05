@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 import BDBOAuth1Manager
 
-class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, SwitchLabelDelegate, FilterViewControllerDelegate, SwitchTableViewCellDelegate {
+class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, SwitchTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -20,16 +20,16 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     let searchController = UISearchController(searchResultsController: nil)
     
-    var filteredArray:[Restaurant] = []
+    var filteredNameArray:[Restaurant] = []
     
-    var switchLabel:String = ""
-    
-    var onFromMain = Bool()
+    var switchState = Bool()
+    var switchLabel = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        
         Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
@@ -73,30 +73,20 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func filterContentForSearchText (searchText: String) {
-        filteredArray = restaurants.filter({ (restaurant) -> Bool in
-            if onFromMain {
-                return restaurant.kind.lowercased().contains(searchText.lowercased())
-            } else {
-                return restaurant.name.lowercased().contains(searchText.lowercased())
-            }
-            
+        filteredNameArray = restaurants.filter({ (restaurant) -> Bool in
+            return restaurant.name.lowercased().contains(searchText.lowercased())
         })
         
         self.tableView.reloadData()
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        if onFromMain {
-            filterContentForSearchText(searchText: switchLabel)
-        } else {
-            filterContentForSearchText(searchText: searchController.searchBar.text!)
-        }
-
+        filterContentForSearchText(searchText: searchController.searchBar.text!)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.isActive && searchController.searchBar.text != ""  {
-            return self.filteredArray.count
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return self.filteredNameArray.count
         } else {
             return self.restaurants.count
         }
@@ -106,7 +96,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell") as! TableViewCell
         
         if searchController.isActive && searchController.searchBar.text != "" {
-            cell.Name.text = filteredArray[indexPath.row].name
+            cell.Name.text = filteredNameArray[indexPath.row].name
         } else {
             cell.Name.text = self.restaurants[indexPath.row].name
         }
@@ -130,23 +120,18 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
     }
     
-    func didReveiText(text: String) {
-        self.switchLabel = text
-        print(text)
-    }
+
     
-    func mySwitchTapped(cell: SwitchTableViewCell, switchState: Bool) {
+    func mySwitchTapped(cell: SwitchTableViewCell, switchState: Bool, switchLabel: String) {
 
         
         //  Do whatever you need to do with the indexPath
-        onFromMain = switchState
+        self.switchState = switchState
+        self.switchLabel = switchLabel
         print(switchState)
+        print(switchLabel)
         
         print("Button tapped on row")
-    }
-    
-    func myVCDidFinish(controller: FilterViewController, switchState: Bool) {
-        onFromMain = switchState
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
