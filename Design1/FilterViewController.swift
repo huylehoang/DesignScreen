@@ -8,9 +8,16 @@
 
 import UIKit
 
+protocol FilterViewControllerDelegate: class {
+    func myVCDidFinish(controller: FilterViewController, switchState: Bool)
+}
+
 class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    var filterViewControllerDelegate: FilterViewControllerDelegate?
+    
     let sectionName = ["Offering","Distance","Sort By","Category","See All"]
 
     let offeringArray = ["Offering A Deal"]
@@ -24,6 +31,10 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     let seeAllArray = ["See All"]
     
+    var switchState = Bool()
+    
+    weak var firstController:FirstViewController?
+    
     var distanceDropDown = false
     var sortByDropDown = false
     var categoryDropDown = false
@@ -33,8 +44,11 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.delegate = self
         
-
-        // Do any additional setup after loading the view.
+        print(switchState)
+//        self.navigationItem.hidesBackButton = true
+//        let newBackButton = UIBarButtonItem(title: "Hello", style: UIBarButtonItemStyle.plain, target: self, action: #selector(FilterViewController.back(sender:)))
+//        self.navigationItem.leftBarButtonItem = newBackButton
+//        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -105,7 +119,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             }
         case sectionName[3]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell") as! SwitchTableViewCell
-            cell.delegate = self
+            cell.delegate = firstController
             cell.switchLabel?.text = self.categoryArray[indexPath.row]
             return cell
         case sectionName[4]:
@@ -161,7 +175,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func mySwitchTapped(cell: SwitchTableViewCell) {
+    func mySwitchTapped(cell: SwitchTableViewCell, switchState: Bool) {
         guard let indexPath = self.tableView.indexPath(for: cell as UITableViewCell) else {
             // Note, this shouldn't happen - how did the user tap on a button that wasn't on screen?
             return
@@ -170,6 +184,15 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         //  Do whatever you need to do with the indexPath
         
         print("Button tapped on row \(indexPath.row)")
+        self.switchState = switchState
+        
     }
+    
+//    func back(sender: UIBarButtonItem) {
+//            
+//            filterViewControllerDelegate!.myVCDidFinish(controller: self, switchState: self.switchState)
+//            _ = navigationController?.popViewController(animated: true)
+//        
+//    }
     
 }

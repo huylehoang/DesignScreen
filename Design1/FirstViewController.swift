@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 import BDBOAuth1Manager
 
-class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, SwitchLabelDelegate {
+class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, SwitchLabelDelegate, FilterViewControllerDelegate, SwitchTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -23,6 +23,8 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     var filteredArray:[Restaurant] = []
     
     var switchLabel:String = ""
+    
+    var onFromMain = Bool()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,15 +74,24 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func filterContentForSearchText (searchText: String) {
         filteredArray = restaurants.filter({ (restaurant) -> Bool in
-            return restaurant.name.lowercased().contains(searchText.lowercased())
+            if onFromMain {
+                return restaurant.kind.lowercased().contains(searchText.lowercased())
+            } else {
+                return restaurant.name.lowercased().contains(searchText.lowercased())
+            }
+            
         })
         
         self.tableView.reloadData()
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-//        filterContentForSearchText(searchText: searchController.searchBar.text!)
-        filterContentForSearchText(searchText: switchLabel)
+        if onFromMain {
+            filterContentForSearchText(searchText: switchLabel)
+        } else {
+            filterContentForSearchText(searchText: searchController.searchBar.text!)
+        }
+
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -121,7 +132,29 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func didReveiText(text: String) {
         self.switchLabel = text
+        print(text)
     }
+    
+    func mySwitchTapped(cell: SwitchTableViewCell, switchState: Bool) {
+
+        
+        //  Do whatever you need to do with the indexPath
+        onFromMain = switchState
+        print(switchState)
+        
+        print("Button tapped on row")
+    }
+    
+    func myVCDidFinish(controller: FilterViewController, switchState: Bool) {
+        onFromMain = switchState
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination as! FilterViewController
+        vc.firstController = self
+    }
+    
+    
 }
 
 

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SwitchTableViewCellDelegate: class {
-    func mySwitchTapped(cell: SwitchTableViewCell)
+    func mySwitchTapped(cell: SwitchTableViewCell, switchState: Bool)
 }
 
 protocol SwitchLabelDelegate: class {
@@ -17,7 +17,7 @@ protocol SwitchLabelDelegate: class {
 }
 
 class SwitchTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var toggle: UISwitch!
     @IBOutlet weak var switchLabel: UILabel!
     
@@ -43,17 +43,15 @@ class SwitchTableViewCell: UITableViewCell {
     
     @IBAction func someSwitchTapped(_ sender: Any) {
         updateMySwitchState()
-        self.delegate?.mySwitchTapped(cell: self)
+        self.delegate?.mySwitchTapped(cell: self, switchState: toggle.isOn)
     }
 
     
     func updateMySwitchState() {
         if toggle.isOn {
-            print("isOn")
-            print(switchLabel.text!)
             self.labelDelegate?.didReveiText(text: switchLabel.text!)
         } else {
-            print("isOff")
+            print("Nothing")
         }
     }
     
