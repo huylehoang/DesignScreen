@@ -70,34 +70,12 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         
         print(parameters)
         
-//        var restaurants:[Restaurant] = []
-        
         return self.get("search", parameters: parameters, success: { (operation: AFHTTPRequestOperation, response: Any) in
             if let response = response as? NSDictionary {
                 let dictionaries = response["businesses"] as? [NSDictionary]
-//                var newRestaurants = [Restaurant]()
                 
                 if dictionaries != nil {
                     completion(Business.businesses(array: dictionaries!), nil)
-//                    for dictionary in dictionaries! {
-//                        let location = dictionary["location"] as! NSDictionary
-//                        let display_address = location["display_address"]! as! NSArray
-//                        let address = "\(display_address[0])" + "," + " \(display_address[1])"
-//                        let name = dictionary["name"]! as! String
-//                        let categories = dictionary["categories"] as! NSArray
-//                        var arr1:[String] = []
-//                        for category in categories {
-//                            let arr = category as! NSArray
-//                            arr1.append(arr[0] as! String)
-//                        }
-//                        let str = arr1.joined(separator: ", ")
-//                        let kind = str 
-//                        let image = dictionary["image_url"]! as! String
-//                        
-//                        newRestaurants.append(Restaurant(name: name, address: address, kind: kind, image:image))
-//                    }
-//                    restaurants = newRestaurants
-//                    self.delegate?.didReceiveData(data: restaurants)
 
                 }
             }

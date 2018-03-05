@@ -22,8 +22,12 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var filteredNameArray:[Restaurant] = []
     
-    var switchState = Bool()
-    var switchLabel = String()
+    var filteredKindArray:[Restaurant] = []
+    
+    var switchSelected:[String] = []
+    
+    var switchState:Bool = false
+    var switchLabel:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +42,6 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             if let businesses = businesses {
                 for business in businesses {
-                    
                     let imageURL = business.imageURL!
                     
                     let image = "\(imageURL)"
@@ -73,20 +76,34 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func filterContentForSearchText (searchText: String) {
-        filteredNameArray = restaurants.filter({ (restaurant) -> Bool in
-            return restaurant.name.lowercased().contains(searchText.lowercased())
-        })
-        
+        if switchState && switchLabel != "" {
+            filteredKindArray = restaurants.filter({ (restaurant) -> Bool in
+                print(restaurant.kind.lowercased(), "  " , switchLabel.lowercased())
+                return restaurant.kind.lowercased().contains(searchText.lowercased())
+            })
+        } else {
+            filteredNameArray = restaurants.filter({ (restaurant) -> Bool in
+                return restaurant.name.lowercased().contains(searchText.lowercased())
+            })
+        }
         self.tableView.reloadData()
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchText: searchController.searchBar.text!)
+        if switchState && switchLabel != "" {
+            filterContentForSearchText(searchText: switchLabel)
+        } else {
+            filterContentForSearchText(searchText: searchController.searchBar.text!)
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.isActive && searchController.searchBar.text != "" {
             return self.filteredNameArray.count
+        }
+        if switchState && switchLabel != "" {
+            return self.filteredKindArray.count
         } else {
             return self.restaurants.count
         }
@@ -97,26 +114,60 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         if searchController.isActive && searchController.searchBar.text != "" {
             cell.Name.text = filteredNameArray[indexPath.row].name
+            cell.Address.text = self.restaurants[indexPath.row].address
+            cell.Kinds.text = self.restaurants[indexPath.row].kind
+            cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
+            let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
+            
+            if reviewImgURL != nil {
+                let data = NSData(contentsOf: (reviewImgURL as? URL)!)
+                cell.ReviewImage.image = UIImage(data: data as! Data)
+            }
+            
+            let imgURL = NSURL(string: self.restaurants[indexPath.row].image)
+            
+            if imgURL != nil {
+                let data = NSData(contentsOf: (imgURL as? URL)!)
+                cell.restaurantImage.image = UIImage(data: data as! Data)
+            }
+        } else if switchState && switchLabel != "" {
+            cell.Name.text = self.restaurants[indexPath.row].name
+            cell.Address.text = self.restaurants[indexPath.row].address
+            cell.Kinds.text = filteredKindArray[indexPath.row].kind
+            cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
+            let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
+            
+            if reviewImgURL != nil {
+                let data = NSData(contentsOf: (reviewImgURL as? URL)!)
+                cell.ReviewImage.image = UIImage(data: data as! Data)
+            }
+            
+            let imgURL = NSURL(string: self.restaurants[indexPath.row].image)
+            
+            if imgURL != nil {
+                let data = NSData(contentsOf: (imgURL as? URL)!)
+                cell.restaurantImage.image = UIImage(data: data as! Data)
+            }
         } else {
             cell.Name.text = self.restaurants[indexPath.row].name
+            cell.Address.text = self.restaurants[indexPath.row].address
+            cell.Kinds.text = self.restaurants[indexPath.row].kind
+            cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
+            let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
+            
+            if reviewImgURL != nil {
+                let data = NSData(contentsOf: (reviewImgURL as? URL)!)
+                cell.ReviewImage.image = UIImage(data: data as! Data)
+            }
+            
+            let imgURL = NSURL(string: self.restaurants[indexPath.row].image)
+            
+            if imgURL != nil {
+                let data = NSData(contentsOf: (imgURL as? URL)!)
+                cell.restaurantImage.image = UIImage(data: data as! Data)
+            }
         }
-        cell.Address.text = self.restaurants[indexPath.row].address
-        cell.Kinds.text = self.restaurants[indexPath.row].kind
-        cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
-        
-        let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
-        
-        if reviewImgURL != nil {
-            let data = NSData(contentsOf: (reviewImgURL as? URL)!)
-            cell.ReviewImage.image = UIImage(data: data as! Data)
-        }
-        
-        let imgURL = NSURL(string: self.restaurants[indexPath.row].image)
-        
-        if imgURL != nil {
-            let data = NSData(contentsOf: (imgURL as? URL)!)
-            cell.restaurantImage.image = UIImage(data: data as! Data)
-        }
+
         return cell
     }
     
@@ -130,13 +181,20 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.switchLabel = switchLabel
         print(switchState)
         print(switchLabel)
-        
-        print("Button tapped on row")
+        if switchSelected.contains(switchLabel) {
+            let index = switchSelected.index(of: switchLabel)
+            switchSelected.remove(at: index!)
+        } else {
+            self.switchSelected.append(switchLabel)
+        }
+        print(switchSelected)
+        filterContentForSearchText(searchText: switchLabel)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! FilterViewController
         vc.firstController = self
+        vc.switchFilterSelected = self.switchSelected
     }
     
     

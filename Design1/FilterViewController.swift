@@ -8,9 +8,10 @@
 
 import UIKit
 
-//protocol FilterViewControllerDelegate: class {
-//    func myVCDidFinish(controller: FilterViewController, switchState: Bool, switchLabel: String)
-//}
+struct SwitchState {
+    var category: String
+    var theSwitchState = false
+}
 
 class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchTableViewCellDelegate {
 
@@ -26,11 +27,24 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     let sortByArray = ["Best Match","Match 1","Match 2"]
     
-    let categoryArray = ["Afgan","African","American(New)","American(Traditional)","Thai","Desserts",
-                         "Seafood"]
+    var categoryArray:[SwitchState] = [SwitchState(category: "American(New)", theSwitchState: false),
+                                      SwitchState(category: "Thai", theSwitchState: false),
+                                      SwitchState(category: "Bars", theSwitchState: false),
+                                      SwitchState(category: "Noodles", theSwitchState: false),
+                                      SwitchState(category: "Desserts", theSwitchState: false),
+                                      SwitchState(category: "Vegan", theSwitchState: false),
+                                      SwitchState(category: "Laotian", theSwitchState: false),
+                                      SwitchState(category: "Comfort Food", theSwitchState: false),
+                                      SwitchState(category: "Gluten_Free", theSwitchState: false),
+                                      SwitchState(category: "Asian Fusion", theSwitchState: false),
+                                      SwitchState(category: "Lounges", theSwitchState: false),
+                                      SwitchState(category: "Vegetarian", theSwitchState: false),
+                                      SwitchState(category: "Soup", theSwitchState: false),
+                                      SwitchState(category: "Seafood", theSwitchState: false)]
     
     let seeAllArray = ["See All"]
     
+    var switchFilterSelected:[String] = []
     
     var distanceDropDown = false
     var sortByDropDown = false
@@ -40,6 +54,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -111,7 +126,19 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         case sectionName[3]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell") as! SwitchTableViewCell
             cell.delegate = firstController
-            cell.switchLabel?.text = self.categoryArray[indexPath.row]
+            for i in categoryArray {
+                for j in switchFilterSelected {
+                    let a:String = i.category
+                    if j == a {
+                        cell.toggle.isOn = self.categoryArray[indexPath.row].theSwitchState
+                        cell.switchTapAction = {
+                            (isOn) in
+                            self.categoryArray[indexPath.row].theSwitchState = isOn
+                        }
+                    }
+                }
+            }
+            cell.switchLabel?.text = self.categoryArray[indexPath.row].category
             return cell
         case sectionName[4]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "buttonCell") as! ButtonTableViewCell

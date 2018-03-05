@@ -19,6 +19,8 @@ class SwitchTableViewCell: UITableViewCell {
     
     var delegate: SwitchTableViewCellDelegate?
     
+    var switchTapAction : ((Bool)->Void)?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -38,6 +40,7 @@ class SwitchTableViewCell: UITableViewCell {
     
     @IBAction func someSwitchTapped(_ sender: Any) {
         updateMySwitchState()
+        switchTapAction?((sender as AnyObject).isOn)
         self.delegate?.mySwitchTapped(cell: self, switchState: toggle.isOn, switchLabel: switchLabel.text!)
     }
 
