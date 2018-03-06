@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1044F08D1FB0DE5800150F8D /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1044F08C1FB0DE5800150F8D /* Restaurant.swift */; };
+		108F08CC204E2FDC009BF252 /* SwitchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108F08CB204E2FDC009BF252 /* SwitchState.swift */; };
 		10B8E74F1F9D158B0062E80F /* YelpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B8E74E1F9D158B0062E80F /* YelpClient.swift */; };
 		10D30CAF1FC498150082F70A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D30CAE1FC498150082F70A /* FilterViewController.swift */; };
 		10D77DF6200B6B9D002C60B6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D77DF5200B6B9D002C60B6 /* SwitchTableViewCell.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		1044F08C1FB0DE5800150F8D /* Restaurant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
+		108F08CB204E2FDC009BF252 /* SwitchState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchState.swift; sourceTree = "<group>"; };
 		10B8E74E1F9D158B0062E80F /* YelpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YelpClient.swift; sourceTree = "<group>"; };
 		10D30CAE1FC498150082F70A /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		10D77DF5200B6B9D002C60B6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
@@ -107,6 +109,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		108F08CD204E3048009BF252 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				10FEB2331F9D0ECF0092724D /* Business.swift */,
+				1044F08C1FB0DE5800150F8D /* Restaurant.swift */,
+				108F08CB204E2FDC009BF252 /* SwitchState.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		108F08D0204E3062009BF252 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				10B8E74E1F9D158B0062E80F /* YelpClient.swift */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		108F08D1204E306F009BF252 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				10D30CAE1FC498150082F70A /* FilterViewController.swift */,
+				10F2E8451F801D0900B959CE /* FirstViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		108F08D2204E3078009BF252 /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				10F2E8431F8018D400B959CE /* TableViewCell.swift */,
+				10D77DF5200B6B9D002C60B6 /* SwitchTableViewCell.swift */,
+				10D77DF7200B6BBF002C60B6 /* DropTableViewCell.swift */,
+				10D77DF9200B6CD7002C60B6 /* CircleTableViewCell.swift */,
+				10D77DFB200B6D5B002C60B6 /* ButtonTableViewCell.swift */,
+			);
+			name = "Table View Cells";
+			sourceTree = "<group>";
+		};
 		10F2E8091F80127400B959CE = {
 			isa = PBXGroup;
 			children = (
@@ -132,21 +173,15 @@
 		10F2E8141F80127400B959CE /* Design1 */ = {
 			isa = PBXGroup;
 			children = (
+				108F08D2204E3078009BF252 /* Table View Cells */,
+				108F08D1204E306F009BF252 /* View Controllers */,
+				108F08D0204E3062009BF252 /* API */,
+				108F08CD204E3048009BF252 /* Models */,
 				10F2E8151F80127400B959CE /* AppDelegate.swift */,
 				10F2E8191F80127400B959CE /* Main.storyboard */,
 				10F2E81C1F80127400B959CE /* Assets.xcassets */,
 				10F2E81E1F80127400B959CE /* LaunchScreen.storyboard */,
 				10F2E8211F80127400B959CE /* Info.plist */,
-				10F2E8431F8018D400B959CE /* TableViewCell.swift */,
-				10F2E8451F801D0900B959CE /* FirstViewController.swift */,
-				10FEB2331F9D0ECF0092724D /* Business.swift */,
-				10B8E74E1F9D158B0062E80F /* YelpClient.swift */,
-				1044F08C1FB0DE5800150F8D /* Restaurant.swift */,
-				10D30CAE1FC498150082F70A /* FilterViewController.swift */,
-				10D77DF5200B6B9D002C60B6 /* SwitchTableViewCell.swift */,
-				10D77DF7200B6BBF002C60B6 /* DropTableViewCell.swift */,
-				10D77DF9200B6CD7002C60B6 /* CircleTableViewCell.swift */,
-				10D77DFB200B6D5B002C60B6 /* ButtonTableViewCell.swift */,
 			);
 			path = Design1;
 			sourceTree = "<group>";
@@ -494,6 +529,7 @@
 				10D77DFA200B6CD7002C60B6 /* CircleTableViewCell.swift in Sources */,
 				10F2E8461F801D0900B959CE /* FirstViewController.swift in Sources */,
 				1044F08D1FB0DE5800150F8D /* Restaurant.swift in Sources */,
+				108F08CC204E2FDC009BF252 /* SwitchState.swift in Sources */,
 				10F2E8441F8018D400B959CE /* TableViewCell.swift in Sources */,
 				10D77DF8200B6BBF002C60B6 /* DropTableViewCell.swift in Sources */,
 				10FEB2341F9D0ECF0092724D /* Business.swift in Sources */,

@@ -8,12 +8,7 @@
 
 import UIKit
 
-struct SwitchState {
-    var category: String
-    var theSwitchState = false
-}
-
-class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchTableViewCellDelegate {
+class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -54,7 +49,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -126,19 +120,16 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         case sectionName[3]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell") as! SwitchTableViewCell
             cell.delegate = firstController
-            for i in categoryArray {
+            cell.switchLabel?.text = self.categoryArray[indexPath.row].category
                 for j in switchFilterSelected {
-                    let a:String = i.category
-                    if j == a {
-                        cell.toggle.isOn = self.categoryArray[indexPath.row].theSwitchState
-                        cell.switchTapAction = {
-                            (isOn) in
-                            self.categoryArray[indexPath.row].theSwitchState = isOn
-                        }
+                    if j == self.categoryArray[indexPath.row].category {
+                        cell.toggle.isOn = true
+                        return cell
+                    } else {
+                        cell.toggle.isOn = false
                     }
                 }
-            }
-            cell.switchLabel?.text = self.categoryArray[indexPath.row].category
+
             return cell
         case sectionName[4]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "buttonCell") as! ButtonTableViewCell
@@ -193,15 +184,4 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func mySwitchTapped(cell: SwitchTableViewCell, switchState: Bool, switchLabel: String) {
-        guard let indexPath = self.tableView.indexPath(for: cell as UITableViewCell) else {
-            // Note, this shouldn't happen - how did the user tap on a button that wasn't on screen?
-            return
-        }
-        
-        //  Do whatever you need to do with the indexPath
-        
-        print("Button tapped on row \(indexPath.row)")
-        
-    }
 }

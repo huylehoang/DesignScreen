@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AFNetworking
 import BDBOAuth1Manager
 
 class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, SwitchTableViewCellDelegate {
@@ -20,14 +19,9 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     let searchController = UISearchController(searchResultsController: nil)
     
-    var filteredNameArray:[Restaurant] = []
-    
-    var filteredKindArray:[Restaurant] = []
+    var filteredArray:[Restaurant] = []
     
     var switchSelected:[String] = []
-    
-    var switchState:Bool = false
-    var switchLabel:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,13 +70,27 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func filterContentForSearchText (searchText: String) {
-        if switchState && switchLabel != "" {
-            filteredKindArray = restaurants.filter({ (restaurant) -> Bool in
-                print(restaurant.kind.lowercased(), "  " , switchLabel.lowercased())
-                return restaurant.kind.lowercased().contains(searchText.lowercased())
+        if switchSelected.count != 0  {
+            filteredArray = restaurants.filter({ (restaurant) -> Bool in
+//                print(restaurant.kind.lowercased(), "  " , switchLabel.lowercased())
+                var check = 0
+                for i in switchSelected {
+                    
+                    if restaurant.kind.lowercased().contains(i.lowercased()) {
+                        check += 1
+                    }
+                }
+                
+                if searchText != "" {
+//                    print(restaurant.name.lowercased().contains(searchText.lowercased()), searchText)
+                   return restaurant.name.lowercased().contains(searchText.lowercased()) && check == switchSelected.count
+                } else {
+                    return (check == switchSelected.count)
+                }
+                
             })
         } else {
-            filteredNameArray = restaurants.filter({ (restaurant) -> Bool in
+            filteredArray = restaurants.filter({ (restaurant) -> Bool in
                 return restaurant.name.lowercased().contains(searchText.lowercased())
             })
         }
@@ -90,20 +98,12 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        if switchState && switchLabel != "" {
-            filterContentForSearchText(searchText: switchLabel)
-        } else {
-            filterContentForSearchText(searchText: searchController.searchBar.text!)
-        }
-        
+        filterContentForSearchText(searchText: searchController.searchBar.text ?? "")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.isActive && searchController.searchBar.text != "" {
-            return self.filteredNameArray.count
-        }
-        if switchState && switchLabel != "" {
-            return self.filteredKindArray.count
+        if searchController.isActive && searchController.searchBar.text != "" || switchSelected.count != 0  {
+            return self.filteredArray.count
         } else {
             return self.restaurants.count
         }
@@ -112,37 +112,19 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell") as! TableViewCell
         
-        if searchController.isActive && searchController.searchBar.text != "" {
-            cell.Name.text = filteredNameArray[indexPath.row].name
-            cell.Address.text = self.restaurants[indexPath.row].address
-            cell.Kinds.text = self.restaurants[indexPath.row].kind
-            cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
-            let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
+        if searchController.isActive && searchController.searchBar.text != "" || switchSelected.count != 0 {
+            cell.Name.text = filteredArray[indexPath.row].name
+            cell.Address.text = filteredArray[indexPath.row].address
+            cell.Kinds.text = self.filteredArray[indexPath.row].kind
+            cell.ReviewCount.text = self.filteredArray[indexPath.row].reviewCount
+            let reviewImgURL = NSURL(string: self.filteredArray[indexPath.row].reviewImage)
             
             if reviewImgURL != nil {
                 let data = NSData(contentsOf: (reviewImgURL as? URL)!)
                 cell.ReviewImage.image = UIImage(data: data as! Data)
             }
             
-            let imgURL = NSURL(string: self.restaurants[indexPath.row].image)
-            
-            if imgURL != nil {
-                let data = NSData(contentsOf: (imgURL as? URL)!)
-                cell.restaurantImage.image = UIImage(data: data as! Data)
-            }
-        } else if switchState && switchLabel != "" {
-            cell.Name.text = self.restaurants[indexPath.row].name
-            cell.Address.text = self.restaurants[indexPath.row].address
-            cell.Kinds.text = filteredKindArray[indexPath.row].kind
-            cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
-            let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
-            
-            if reviewImgURL != nil {
-                let data = NSData(contentsOf: (reviewImgURL as? URL)!)
-                cell.ReviewImage.image = UIImage(data: data as! Data)
-            }
-            
-            let imgURL = NSURL(string: self.restaurants[indexPath.row].image)
+            let imgURL = NSURL(string: self.filteredArray[indexPath.row].image)
             
             if imgURL != nil {
                 let data = NSData(contentsOf: (imgURL as? URL)!)
@@ -167,28 +149,18 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
                 cell.restaurantImage.image = UIImage(data: data as! Data)
             }
         }
-
         return cell
     }
     
-
-    
-    func mySwitchTapped(cell: SwitchTableViewCell, switchState: Bool, switchLabel: String) {
-
+    func mySwitchTapped(cell: SwitchTableViewCell, switchLabel: String) {
         
-        //  Do whatever you need to do with the indexPath
-        self.switchState = switchState
-        self.switchLabel = switchLabel
-        print(switchState)
-        print(switchLabel)
         if switchSelected.contains(switchLabel) {
             let index = switchSelected.index(of: switchLabel)
             switchSelected.remove(at: index!)
         } else {
             self.switchSelected.append(switchLabel)
         }
-        print(switchSelected)
-        filterContentForSearchText(searchText: switchLabel)
+        filterContentForSearchText(searchText: searchController.searchBar.text ?? "")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -196,8 +168,6 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         vc.firstController = self
         vc.switchFilterSelected = self.switchSelected
     }
-    
-    
 }
 
 

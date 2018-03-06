@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SwitchTableViewCellDelegate: class {
-    func mySwitchTapped(cell: SwitchTableViewCell, switchState: Bool, switchLabel: String)
+    func mySwitchTapped(cell: SwitchTableViewCell, switchLabel: String)
 }
 
 class SwitchTableViewCell: UITableViewCell {
@@ -18,8 +18,6 @@ class SwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var switchLabel: UILabel!
     
     var delegate: SwitchTableViewCellDelegate?
-    
-    var switchTapAction : ((Bool)->Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,18 +37,16 @@ class SwitchTableViewCell: UITableViewCell {
     }
     
     @IBAction func someSwitchTapped(_ sender: Any) {
-        updateMySwitchState()
-        switchTapAction?((sender as AnyObject).isOn)
-        self.delegate?.mySwitchTapped(cell: self, switchState: toggle.isOn, switchLabel: switchLabel.text!)
+//        updateMySwitchState()
+        self.delegate?.mySwitchTapped(cell: self,  switchLabel: switchLabel.text!)
     }
 
-    
-    func updateMySwitchState() {
-        if toggle.isOn {
-            print("Switch State is On")
-        } else {
-            print("Switch State is OFF")
-        }
-    }
+//    func updateMySwitchState() {
+//        if toggle.isOn {
+//            print("Switch State is On")
+//        } else {
+//            print("Switch State is OFF")
+//        }
+//    }
     
 }
