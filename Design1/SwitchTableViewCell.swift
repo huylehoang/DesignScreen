@@ -37,16 +37,6 @@ class SwitchTableViewCell: UITableViewCell {
     }
     
     @IBAction func someSwitchTapped(_ sender: Any) {
-//        updateMySwitchState()
         self.delegate?.mySwitchTapped(cell: self,  switchLabel: switchLabel.text!)
     }
-
-//    func updateMySwitchState() {
-//        if toggle.isOn {
-//            print("Switch State is On")
-//        } else {
-//            print("Switch State is OFF")
-//        }
-//    }
-    
 }

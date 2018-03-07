@@ -8,11 +8,18 @@
 
 import UIKit
 
-class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+protocol FilterViewDelegate: class {
+    func didReceiveData(switchSelected: [String])
+}
+
+
+class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
-    weak var firstController:FirstViewController?
+//    weak var firstController:FirstViewController?
+    
+    var switchDelegate: FilterViewDelegate?
     
     let sectionName = ["Offering","Distance","Sort By","Category","See All"]
 
@@ -39,7 +46,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     let seeAllArray = ["See All"]
     
-    var switchFilterSelected:[String] = []
+    var switchCategorySelected:[String] = []
     
     var distanceDropDown = false
     var sortByDropDown = false
@@ -49,6 +56,9 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        navigationItem.title = "Filter"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(back))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Search", style: .plain, target: self, action: #selector(search))
     }
 
     override func didReceiveMemoryWarning() {
@@ -119,9 +129,9 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             }
         case sectionName[3]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "switchCell") as! SwitchTableViewCell
-            cell.delegate = firstController
+            cell.delegate = self
             cell.switchLabel?.text = self.categoryArray[indexPath.row].category
-                for j in switchFilterSelected {
+                for j in switchCategorySelected {
                     if j == self.categoryArray[indexPath.row].category {
                         cell.toggle.isOn = true
                         return cell
@@ -144,19 +154,21 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
 
         if indexPath.row == 0 && indexPath.section == 1{
             distanceDropDown = !distanceDropDown
-            tableView.reloadData()
+            tableView.beginUpdates()
+            tableView.endUpdates()
         }
         if indexPath.row == 0 && indexPath.section == 2{
             sortByDropDown = !sortByDropDown
-            tableView.reloadData()
+            tableView.beginUpdates()
+            tableView.endUpdates()
         }
         if indexPath.row == 0 && indexPath.section == 4{
             categoryDropDown = !categoryDropDown
-            tableView.reloadData()
+            tableView.beginUpdates()
+            tableView.endUpdates()
         }
 
         tableView.deselectRow(at: indexPath, animated: true)
-
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -184,4 +196,21 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    @objc func search() {
+        back()
+        self.switchDelegate?.didReceiveData(switchSelected: switchCategorySelected)
+    }
+    
+    @objc func back() {
+        _ = navigationController?.popViewController(animated: true)
+    }
+    
+    func mySwitchTapped(cell: SwitchTableViewCell, switchLabel: String) {
+        if self.switchCategorySelected.contains(switchLabel) {
+            let index = self.switchCategorySelected.index(of: switchLabel)
+            self.switchCategorySelected.remove(at: index!)
+        } else {
+            self.switchCategorySelected.append(switchLabel)
+        }
+    }
 }

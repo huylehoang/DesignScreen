@@ -304,6 +304,7 @@
 				TargetAttributes = {
 					10F2E8111F80127400B959CE = {
 						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = 3KVCFKUZZ6;
 						ProvisioningStyle = Automatic;
 					};
 					10F2E8251F80127400B959CE = {
@@ -686,9 +687,12 @@
 			baseConfigurationReference = 81CEDDA2AF47CA511DC9B548 /* Pods-Design1.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3KVCFKUZZ6;
 				INFOPLIST_FILE = Design1/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LeeX.Design1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LeeX.Design1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -699,9 +703,12 @@
 			baseConfigurationReference = 1D180CBAE212E23E1C278953 /* Pods-Design1.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3KVCFKUZZ6;
 				INFOPLIST_FILE = Design1/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LeeX.Design1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LeeX.Design1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

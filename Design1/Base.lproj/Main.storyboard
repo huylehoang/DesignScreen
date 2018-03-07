@@ -112,19 +112,20 @@
                         <barButtonItem key="leftBarButtonItem" title="Filter" style="done" id="lq2-w8-GH6">
                             <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <segue destination="JLP-br-9HI" kind="show" id="ZmF-F0-r5G"/>
+                                <action selector="btnFilterClicked:" destination="BYZ-38-t0r" id="S62-K9-9xt"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="2qF-8G-uKU" id="TmY-nd-F28"/>
+                        <segue destination="JLP-br-9HI" kind="show" identifier="moveToFilterVC" id="AAc-jV-pVK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="849" y="139"/>
         </scene>
-        <!--Filter View Controller-->
+        <!--Filter-->
         <scene sceneID="ZtC-cK-RDU">
             <objects>
                 <viewController id="JLP-br-9HI" customClass="FilterViewController" customModule="Design1" customModuleProvider="target" sceneMemberID="viewController">
@@ -137,7 +138,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="62" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RhX-2G-7Ak">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switchCell" rowHeight="47" id="32N-mt-eju" customClass="SwitchTableViewCell" customModule="Design1" customModuleProvider="target">
@@ -311,6 +312,9 @@
                             <constraint firstItem="RhX-2G-7Ak" firstAttribute="top" secondItem="7sc-c3-tue" secondAttribute="top" id="kdV-w6-K3W"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Filter" id="cnq-LM-UmW"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="TableView" destination="RhX-2G-7Ak" id="y5B-uW-KNj"/>
                     </connections>

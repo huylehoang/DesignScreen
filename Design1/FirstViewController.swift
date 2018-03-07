@@ -9,7 +9,7 @@
 import UIKit
 import BDBOAuth1Manager
 
-class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, SwitchTableViewCellDelegate {
+class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, FilterViewDelegate{
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -152,22 +152,23 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
     }
     
-    func mySwitchTapped(cell: SwitchTableViewCell, switchLabel: String) {
-        
-        if switchSelected.contains(switchLabel) {
-            let index = switchSelected.index(of: switchLabel)
-            switchSelected.remove(at: index!)
-        } else {
-            self.switchSelected.append(switchLabel)
-        }
+    func didReceiveData(switchSelected: [String]) {
+        self.switchSelected = switchSelected
         filterContentForSearchText(searchText: searchController.searchBar.text ?? "")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! FilterViewController
-        vc.firstController = self
-        vc.switchFilterSelected = self.switchSelected
+        vc.switchDelegate = self
+//        vc.firstController = self
+        vc.switchCategorySelected = self.switchSelected
+//        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: nil)
     }
+
+    @IBAction func btnFilterClicked(_ sender: Any) {
+        performSegue(withIdentifier: "moveToFilterVC", sender: self)
+    }
+    
 }
 
 
