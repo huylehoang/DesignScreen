@@ -54,7 +54,8 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
             }
             
             self.restaurants = newRestaurants
-            self.tableView.reloadData()
+            self.animateTable()
+//            self.tableView.reloadData()
             
         }
         )
@@ -63,6 +64,11 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         searchController.hidesNavigationBarDuringPresentation = false
         navigationItem.titleView = searchController.searchBar
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -167,6 +173,31 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     @IBAction func btnFilterClicked(_ sender: Any) {
         performSegue(withIdentifier: "moveToFilterVC", sender: self)
+    }
+    
+    func animateTable() {
+        self.tableView.reloadData()
+        let cells = tableView.visibleCells
+        
+//        let tableViewHeight = tableView.bounds.size.height
+        
+        for cell in cells {
+//            cell.transform = CGAffineTransform(translationX: 0, y: tableViewHeight)
+              cell.transform = CGAffineTransform(scaleX: 2, y: 2)
+        }
+        
+        for cell in cells {
+            //            cell.transform = CGAffineTransform(translationX: 0, y: tableViewHeight)
+            cell.transform = CGAffineTransform(scaleX: -2, y: -2)
+        }
+        
+        var delayCounter = 0
+        for cell in cells {
+            UIView.animate(withDuration: 1.25, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                cell.transform = CGAffineTransform.identity
+            }, completion: nil)
+            delayCounter += 1
+        }
     }
     
 }

@@ -12,7 +12,6 @@ protocol FilterViewDelegate: class {
     func didReceiveData(switchSelected: [String])
 }
 
-
 class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
@@ -37,7 +36,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
                                       SwitchState(category: "Vegan", theSwitchState: false),
                                       SwitchState(category: "Laotian", theSwitchState: false),
                                       SwitchState(category: "Comfort Food", theSwitchState: false),
-                                      SwitchState(category: "Gluten_Free", theSwitchState: false),
+                                      SwitchState(category: "Gluten-Free", theSwitchState: false),
                                       SwitchState(category: "Asian Fusion", theSwitchState: false),
                                       SwitchState(category: "Lounges", theSwitchState: false),
                                       SwitchState(category: "Vegetarian", theSwitchState: false),
@@ -56,11 +55,17 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
+
         navigationItem.title = "Filter"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(back))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Search", style: .plain, target: self, action: #selector(search))
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.animateTable()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -139,7 +144,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
                         cell.toggle.isOn = false
                     }
                 }
-
             return cell
         case sectionName[4]:
             let cell = tableView.dequeueReusableCell(withIdentifier: "buttonCell") as! ButtonTableViewCell
@@ -211,6 +215,26 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             self.switchCategorySelected.remove(at: index!)
         } else {
             self.switchCategorySelected.append(switchLabel)
+        }
+    }
+    
+    func animateTable() {
+        self.tableView.reloadData()
+        let cells = tableView.visibleCells
+        
+        let tableViewWidth = tableView.bounds.size.width
+        
+        for cell in cells {
+            cell.transform = CGAffineTransform(translationX: tableViewWidth, y: 0)
+//            cell.transform = CGAffineTransform(scaleX: 2, y: 2)
+        }
+        
+        var delayCounter = 0
+        for cell in cells {
+            UIView.animate(withDuration: 0.75, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                cell.transform = CGAffineTransform.identity
+            }, completion: nil)
+            delayCounter += 1
         }
     }
 }
