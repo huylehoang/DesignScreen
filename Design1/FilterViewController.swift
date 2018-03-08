@@ -226,7 +226,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         
         for cell in cells {
             cell.transform = CGAffineTransform(translationX: tableViewWidth, y: 0)
-//            cell.transform = CGAffineTransform(scaleX: 2, y: 2)
         }
         
         var delayCounter = 0

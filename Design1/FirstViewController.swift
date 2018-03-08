@@ -65,10 +65,10 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         navigationItem.titleView = searchController.searchBar
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.animateTableAferFilter()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -194,6 +194,25 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         var delayCounter = 0
         for cell in cells {
             UIView.animate(withDuration: 1.25, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                cell.transform = CGAffineTransform.identity
+            }, completion: nil)
+            delayCounter += 1
+        }
+    }
+    
+    func animateTableAferFilter() {
+        self.tableView.reloadData()
+        let cells = tableView.visibleCells
+        
+        let tableViewWidth = tableView.bounds.size.width
+        
+        for cell in cells {
+            cell.transform = CGAffineTransform(translationX: tableViewWidth, y: 0)
+        }
+        
+        var delayCounter = 0
+        for cell in cells {
+            UIView.animate(withDuration: 0.75, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 cell.transform = CGAffineTransform.identity
             }, completion: nil)
             delayCounter += 1
