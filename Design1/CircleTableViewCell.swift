@@ -8,9 +8,22 @@
 
 import UIKit
 
+protocol CircleTableViewCellDelegate: class {
+    func didSelected(cell: CircleTableViewCell, string: String)
+}
+
+enum CircleCellType {
+    case distance
+    case sortBy
+}
+
 class CircleTableViewCell: UITableViewCell {
+    
+    var circleDelegate: CircleTableViewCellDelegate?
 
     @IBOutlet weak var circleLabel: UILabel!
+    @IBOutlet weak var circle: UIImageView!
+    var type : CircleCellType = .distance
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -18,8 +31,8 @@ class CircleTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        if selected {
+            self.circleDelegate?.didSelected(cell: self, string: circleLabel.text!)
+        }
     }
-
 }

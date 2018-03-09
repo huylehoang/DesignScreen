@@ -23,6 +23,10 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var switchSelected:[String] = []
     
+    var distanceSelected:String = ""
+    
+    var sortBySelected:String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -55,7 +59,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             self.restaurants = newRestaurants
             self.animateTable()
-//            self.tableView.reloadData()
+            //self.tableView.reloadData()
             
         }
         )
@@ -67,7 +71,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.animateTableAferFilter()
+        self.animateTableAfterFilter()
     }
 
     override func didReceiveMemoryWarning() {
@@ -158,16 +162,26 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
     }
     
-    func didReceiveData(switchSelected: [String]) {
+    func didReceiveSwitchData(switchSelected: [String]) {
         self.switchSelected = switchSelected
         filterContentForSearchText(searchText: searchController.searchBar.text ?? "")
     }
     
+    func didReceiveDistanceData(distanceSelected: String) {
+        self.distanceSelected = distanceSelected
+    }
+    
+    func didReceiveSortByData(sortBySelected: String) {
+        self.sortBySelected = sortBySelected
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! FilterViewController
-        vc.switchDelegate = self
+        vc.filterDelegate = self
 //        vc.firstController = self
         vc.switchCategorySelected = self.switchSelected
+        vc.distanceSelected = self.distanceSelected
+        vc.sortBySelected = self.sortBySelected
 //        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: nil)
     }
 
@@ -200,7 +214,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
-    func animateTableAferFilter() {
+    func animateTableAfterFilter() {
         self.tableView.reloadData()
         let cells = tableView.visibleCells
         

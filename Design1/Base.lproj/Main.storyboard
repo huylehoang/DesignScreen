@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="tK4-Bu-heZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="17D102" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="tK4-Bu-heZ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -149,7 +149,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="47"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="32N-mt-eju" id="X1f-zo-SBS">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="aNQ-k3-bPc">
@@ -193,7 +193,7 @@
                                         <rect key="frame" x="0.0" y="75" width="375" height="47"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Chz-0p-qRd" id="L3a-7S-P2Q">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eiS-pz-ibN">
@@ -202,7 +202,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" image="DownSmallAlt-512" translatesAutoresizingMaskIntoConstraints="NO" id="6vw-x4-bw4">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" image="triangle" translatesAutoresizingMaskIntoConstraints="NO" id="6vw-x4-bw4">
                                                     <rect key="frame" x="309" y="-2" width="50" height="50.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="SWP-iS-lyo"/>
@@ -228,6 +228,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="drop" destination="6vw-x4-bw4" id="vkn-eY-rC1"/>
                                             <outlet property="dropLabel" destination="eiS-pz-ibN" id="ESy-hg-uRJ"/>
                                         </connections>
                                     </tableViewCell>
@@ -235,7 +236,7 @@
                                         <rect key="frame" x="0.0" y="122" width="375" height="47"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="q58-D6-hM2" id="p47-jd-Qtx">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PS1-TG-rYB">
@@ -244,7 +245,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greygrout" translatesAutoresizingMaskIntoConstraints="NO" id="fx6-7E-ewO">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle" translatesAutoresizingMaskIntoConstraints="NO" id="fx6-7E-ewO">
                                                     <rect key="frame" x="323" y="11" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="25" id="3hh-Ic-V8R"/>
@@ -270,6 +271,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="circle" destination="fx6-7E-ewO" id="LGA-am-IMG"/>
                                             <outlet property="circleLabel" destination="PS1-TG-rYB" id="rqI-2u-eYJ"/>
                                         </connections>
                                     </tableViewCell>
@@ -277,7 +279,7 @@
                                         <rect key="frame" x="0.0" y="169" width="375" height="47"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bF2-Vm-wEb" id="IhP-ps-oDg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="See All" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fKm-ng-Wln">
@@ -349,7 +351,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="DownSmallAlt-512" width="20" height="20"/>
-        <image name="greygrout" width="314" height="314"/>
+        <image name="circle" width="314" height="314"/>
+        <image name="triangle" width="20" height="20"/>
     </resources>
 </document>

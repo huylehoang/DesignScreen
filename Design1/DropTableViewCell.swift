@@ -11,6 +11,9 @@ import UIKit
 class DropTableViewCell: UITableViewCell {
 
     @IBOutlet weak var dropLabel: UILabel!
+    
+    @IBOutlet weak var drop: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

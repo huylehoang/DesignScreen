@@ -9,24 +9,34 @@
 import UIKit
 
 protocol FilterViewDelegate: class {
-    func didReceiveData(switchSelected: [String])
+    func didReceiveSwitchData(switchSelected: [String])
+    func didReceiveDistanceData(distanceSelected: String)
+    func didReceiveSortByData(sortBySelected: String)
 }
 
-class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchTableViewCellDelegate {
+class FilterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchTableViewCellDelegate, CircleTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
 //    weak var firstController:FirstViewController?
     
-    var switchDelegate: FilterViewDelegate?
+    var filterDelegate: FilterViewDelegate?
+    
+    var newDistanceString:String = ""
+    
+    var newSortByString:String = ""
     
     let sectionName = ["Offering","Distance","Sort By","Category","See All"]
 
     let offeringArray = ["Offering A Deal"]
     
-    let distanceArray = ["Auto","0.3 miles","1 mile","5 miles","20 mile"]
+    var distanceArray = ["Auto","0.3 miles","1 mile","5 miles","20 miles"]
     
-    let sortByArray = ["Best Match","Match 1","Match 2"]
+    var distanceArrayUpdated:[String] = []
+    
+    var sortByArray = ["Best Match","Match 1","Match 2"]
+    
+    var sortByArrayUpdated:[String] = []
     
     var categoryArray:[SwitchState] = [SwitchState(category: "American(New)", theSwitchState: false),
                                       SwitchState(category: "Thai", theSwitchState: false),
@@ -47,6 +57,11 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     var switchCategorySelected:[String] = []
     
+    var distanceSelected:String = ""
+    
+    var sortBySelected:String = ""
+    
+    
     var distanceDropDown = false
     var sortByDropDown = false
     var categoryDropDown = false
@@ -56,6 +71,18 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        
+        if self.distanceArray.contains(distanceSelected) {
+            distanceArrayUpdated = updateArray(array: distanceArray, arrayUpdated: distanceArrayUpdated, string: distanceSelected)
+        } else {
+            distanceArrayUpdated = distanceArray.map { $0 }
+        }
+        
+        if self.sortByArray.contains(sortBySelected) {
+            sortByArrayUpdated = updateArray(array: sortByArray, arrayUpdated: sortByArrayUpdated, string: sortBySelected)
+        } else {
+            sortByArrayUpdated = sortByArray.map { $0 }
+        }
 
         navigationItem.title = "Filter"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(back))
@@ -95,9 +122,9 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         case 0:
             return offeringArray.count
         case 1:
-            return distanceArray.count
+            return distanceArrayUpdated.count
         case 2:
-            return sortByArray.count
+            return sortByArrayUpdated.count
         case 3:
             return categoryArray.count
         default:
@@ -113,23 +140,28 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             cell.switchLabel?.text = self.offeringArray[indexPath.row]
             return cell
         case sectionName[1]:
-            if indexPath.row == 0 {
+            
+            if indexPath.row == 0 && distanceDropDown == false {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "dropCell") as! DropTableViewCell
-                cell.dropLabel?.text = self.distanceArray[indexPath.row]
+                cell.dropLabel?.text = self.distanceArrayUpdated[indexPath.row]
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "circleCell") as! CircleTableViewCell
+                cell.circleDelegate = self
                 cell.circleLabel?.text = self.distanceArray[indexPath.row]
+                cell.type = .distance
                 return cell
             }
         case sectionName[2]:
-            if indexPath.row == 0 {
+            if indexPath.row == 0 && sortByDropDown == false {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "dropCell") as! DropTableViewCell
-                cell.dropLabel?.text = self.sortByArray[indexPath.row]
+                cell.dropLabel?.text = self.sortByArrayUpdated[indexPath.row]
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "circleCell") as! CircleTableViewCell
-                cell.circleLabel?.text = self.sortByArray[indexPath.row]
+                cell.circleDelegate = self
+                cell.circleLabel?.text = self.sortByArrayUpdated[indexPath.row]
+                cell.type = .sortBy
                 return cell
             }
         case sectionName[3]:
@@ -156,22 +188,36 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if indexPath.row == 0 && indexPath.section == 1{
+        if indexPath.section == 1 {
             distanceDropDown = !distanceDropDown
-            tableView.beginUpdates()
-            tableView.endUpdates()
+            if self.distanceArray.contains(newDistanceString) {
+                distanceArrayUpdated = updateArray(array: distanceArray, arrayUpdated: distanceArrayUpdated, string: newDistanceString)
+                tableView.reloadSections(IndexSet(1...1), with: .automatic)
+            }
+            if indexPath.row == 0 {
+                tableView.reloadSections(IndexSet(1...1), with: .automatic)
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
         }
-        if indexPath.row == 0 && indexPath.section == 2{
+        
+        if indexPath.section == 2{
             sortByDropDown = !sortByDropDown
-            tableView.beginUpdates()
-            tableView.endUpdates()
+            if self.sortByArray.contains(newSortByString) {
+                sortByArrayUpdated = updateArray(array: sortByArray, arrayUpdated: sortByArrayUpdated, string: newSortByString)
+                tableView.reloadSections(IndexSet(2...2), with: .automatic)
+            } else {
+                tableView.reloadSections(IndexSet(2...2), with: .automatic)
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
         }
         if indexPath.row == 0 && indexPath.section == 4{
             categoryDropDown = !categoryDropDown
             tableView.beginUpdates()
             tableView.endUpdates()
         }
-
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -201,12 +247,16 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     @objc func search() {
+
         back()
-        self.switchDelegate?.didReceiveData(switchSelected: switchCategorySelected)
+        self.filterDelegate?.didReceiveSwitchData(switchSelected: switchCategorySelected)
+        self.filterDelegate?.didReceiveDistanceData(distanceSelected: newDistanceString)
+        self.filterDelegate?.didReceiveSortByData(sortBySelected: newSortByString)
     }
     
     @objc func back() {
         _ = navigationController?.popViewController(animated: true)
+
     }
     
     func mySwitchTapped(cell: SwitchTableViewCell, switchLabel: String) {
@@ -215,6 +265,14 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             self.switchCategorySelected.remove(at: index!)
         } else {
             self.switchCategorySelected.append(switchLabel)
+        }
+    }
+    
+    func didSelected(cell: CircleTableViewCell, string: String) {
+        if cell.type == CircleCellType.distance {
+            self.newDistanceString = string
+        } else {
+            self.newSortByString = string
         }
     }
     
@@ -230,10 +288,18 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         
         var delayCounter = 0
         for cell in cells {
-            UIView.animate(withDuration: 0.75, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 cell.transform = CGAffineTransform.identity
             }, completion: nil)
             delayCounter += 1
         }
+    }
+    
+    func updateArray (array: [String], arrayUpdated: [String], string: String) -> [String]{
+        var arrayUpdated = array.map {$0}
+        let index = arrayUpdated.index(of: string)
+        arrayUpdated.remove(at: index!)
+        arrayUpdated.insert(string, at: 0)
+        return arrayUpdated
     }
 }
