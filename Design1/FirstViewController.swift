@@ -32,6 +32,9 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.dataSource = self
         tableView.delegate = self
         
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 200
+        
         Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
@@ -52,7 +55,9 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
                     
                     let reviewCountString = String(describing: reviewCount) + " Reviews"
                     
-                    newRestaurants.append(Restaurant(name: business.name!, address: business.address!, kind: business.categories, image: image, reviewImage: reviewImage, reviewCount: reviewCountString))
+                    print(business.distance!)
+                    
+                    newRestaurants.append(Restaurant(name: business.name!, address: business.address!, kind: business.categories, image: image, reviewImage: reviewImage, reviewCount: reviewCountString, distance: business.distance!))
                     
                 }
             }
@@ -127,6 +132,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
             cell.Address.text = filteredArray[indexPath.row].address
             cell.Kinds.text = self.filteredArray[indexPath.row].kind
             cell.ReviewCount.text = self.filteredArray[indexPath.row].reviewCount
+            cell.Distance.text = self.filteredArray[indexPath.row].distance
             let reviewImgURL = NSURL(string: self.filteredArray[indexPath.row].reviewImage)
             
             if reviewImgURL != nil {
@@ -139,12 +145,14 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
             if imgURL != nil {
                 let data = NSData(contentsOf: (imgURL as? URL)!)
                 cell.restaurantImage.image = UIImage(data: data as! Data)
+                //cell.layoutSubviews()
             }
         } else {
             cell.Name.text = self.restaurants[indexPath.row].name
             cell.Address.text = self.restaurants[indexPath.row].address
             cell.Kinds.text = self.restaurants[indexPath.row].kind
             cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
+            cell.Distance.text = self.restaurants[indexPath.row].distance
             let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
             
             if reviewImgURL != nil {

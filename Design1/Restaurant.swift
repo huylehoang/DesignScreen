@@ -15,4 +15,5 @@ struct Restaurant {
     var image : String!
     var reviewImage: String!
     var reviewCount: String!
+    var distance: String!
 }
