@@ -9,6 +9,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Alamofire.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>AlamofireImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>BDBOAuth1Manager.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -31,32 +41,6 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>1ED8BE8BD6A53853974A60E1AC8B1019</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>43C4B7FF8E4C54D3D0F7816DFDA225F8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7BE727D93261EAB78C6AF9EF46ED1BFB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8952F2305654F1C8E2A95DDE4B925CA6</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FFC2AA2E0FA7D1E913E266325DF5EC58</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

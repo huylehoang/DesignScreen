@@ -15,7 +15,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var restaurants:[Restaurant] = []
     
-    var businesses: [Business]!
+//    var businesses: [Business]!
 
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -27,6 +27,10 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var sortBySelected:String = ""
     
+    var data = RestaurantData()
+    
+    var cell = TableViewCell()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -35,39 +39,44 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
         
-        Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
-            
-            self.businesses = businesses
-            
-            var newRestaurants = [Restaurant]()
-            
-            if let businesses = businesses {
-                for business in businesses {
-                    let imageURL = business.imageURL!
-                    
-                    let image = "\(imageURL)"
-                    
-                    let reviewImageURL = business.ratingImageURL!
-                    
-                    let reviewImage = "\(reviewImageURL)"
-                    
-                    let reviewCount = business.reviewCount!
-                    
-                    let reviewCountString = String(describing: reviewCount) + " Reviews"
-                    
-                    print(business.distance!)
-                    
-                    newRestaurants.append(Restaurant(name: business.name!, address: business.address!, kind: business.categories, image: image, reviewImage: reviewImage, reviewCount: reviewCountString, distance: business.distance!))
-                    
-                }
-            }
-            
+        data.fetchData()
+        data.dataLoaded = { [unowned self] newRestaurants in
             self.restaurants = newRestaurants
-            self.animateTable()
-            //self.tableView.reloadData()
-            
+            self.tableView.animateTable()
         }
-        )
+        
+//        Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
+//
+//            var newRestaurants = [Restaurant]()
+//
+//            if let businesses = businesses {
+//                for business in businesses {
+//                    let imageURL = business.imageURL!
+//
+//                    let image = "\(imageURL)"
+//
+//                    let reviewImageURL = business.ratingImageURL!
+//
+//                    let reviewImage = "\(reviewImageURL)"
+//
+//                    let reviewCount = business.reviewCount!
+//
+//                    let reviewCountString = String(describing: reviewCount) + " Reviews"
+//
+//                    print(business.distance!)
+//
+//                    newRestaurants.append(Restaurant(name: business.name!, address: business.address!, kind: business.categories, image: image, reviewImage: reviewImage, reviewCount: reviewCountString, distance: business.distance!))
+//
+//                }
+//            }
+//
+//            self.restaurants = newRestaurants
+//            self.animateTable()
+//            //self.tableView.reloadData()
+//
+//        }
+//        )
+        
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
@@ -76,7 +85,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.animateTableAfterFilter()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -90,19 +99,16 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
 //                print(restaurant.kind.lowercased(), "  " , switchLabel.lowercased())
                 var check = 0
                 for i in switchSelected {
-                    
                     if restaurant.kind.lowercased().contains(i.lowercased()) {
                         check += 1
                     }
                 }
-                
                 if searchText != "" {
 //                    print(restaurant.name.lowercased().contains(searchText.lowercased()), searchText)
                    return restaurant.name.lowercased().contains(searchText.lowercased()) && check == switchSelected.count
                 } else {
                     return (check == switchSelected.count)
                 }
-                
             })
         } else {
             filteredArray = restaurants.filter({ (restaurant) -> Bool in
@@ -128,44 +134,21 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell") as! TableViewCell
         
         if searchController.isActive && searchController.searchBar.text != "" || switchSelected.count != 0 {
-            cell.Name.text = filteredArray[indexPath.row].name
-            cell.Address.text = filteredArray[indexPath.row].address
-            cell.Kinds.text = self.filteredArray[indexPath.row].kind
-            cell.ReviewCount.text = self.filteredArray[indexPath.row].reviewCount
-            cell.Distance.text = self.filteredArray[indexPath.row].distance
-            let reviewImgURL = NSURL(string: self.filteredArray[indexPath.row].reviewImage)
-            
-            if reviewImgURL != nil {
-                let data = NSData(contentsOf: (reviewImgURL as? URL)!)
-                cell.ReviewImage.image = UIImage(data: data as! Data)
-            }
-            
-            let imgURL = NSURL(string: self.filteredArray[indexPath.row].image)
-            
-            if imgURL != nil {
-                let data = NSData(contentsOf: (imgURL as? URL)!)
-                cell.restaurantImage.image = UIImage(data: data as! Data)
-                //cell.layoutSubviews()
-            }
+            cell.addCell(Name: filteredArray[indexPath.row].name
+                , Address: filteredArray[indexPath.row].address
+                , Kinds: filteredArray[indexPath.row].kind
+                , ReviewCount: filteredArray[indexPath.row].reviewCount
+                , Distance: filteredArray[indexPath.row].distance
+                , ReviewImage: filteredArray[indexPath.row].reviewImage
+                , restaurantImage: filteredArray[indexPath.row].image)
         } else {
-            cell.Name.text = self.restaurants[indexPath.row].name
-            cell.Address.text = self.restaurants[indexPath.row].address
-            cell.Kinds.text = self.restaurants[indexPath.row].kind
-            cell.ReviewCount.text = self.restaurants[indexPath.row].reviewCount
-            cell.Distance.text = self.restaurants[indexPath.row].distance
-            let reviewImgURL = NSURL(string: self.restaurants[indexPath.row].reviewImage)
-            
-            if reviewImgURL != nil {
-                let data = NSData(contentsOf: (reviewImgURL as? URL)!)
-                cell.ReviewImage.image = UIImage(data: data as! Data)
-            }
-            
-            let imgURL = NSURL(string: self.restaurants[indexPath.row].image)
-            
-            if imgURL != nil {
-                let data = NSData(contentsOf: (imgURL as? URL)!)
-                cell.restaurantImage.image = UIImage(data: data as! Data)
-            }
+            cell.addCell(Name: self.restaurants[indexPath.row].name
+                , Address: self.restaurants[indexPath.row].address
+                , Kinds: self.restaurants[indexPath.row].kind
+                , ReviewCount: self.restaurants[indexPath.row].reviewCount
+                , Distance: self.restaurants[indexPath.row].distance
+                , ReviewImage: self.restaurants[indexPath.row].reviewImage
+                , restaurantImage: self.restaurants[indexPath.row].image)
         }
         return cell
     }
@@ -173,6 +156,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     func didReceiveSwitchData(switchSelected: [String]) {
         self.switchSelected = switchSelected
         filterContentForSearchText(searchText: searchController.searchBar.text ?? "")
+        self.tableView.animateTableAfterFilter()
     }
     
     func didReceiveDistanceData(distanceSelected: String) {
@@ -196,51 +180,6 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBAction func btnFilterClicked(_ sender: Any) {
         performSegue(withIdentifier: "moveToFilterVC", sender: self)
     }
-    
-    func animateTable() {
-        self.tableView.reloadData()
-        let cells = tableView.visibleCells
-        
-//        let tableViewHeight = tableView.bounds.size.height
-        
-        for cell in cells {
-//            cell.transform = CGAffineTransform(translationX: 0, y: tableViewHeight)
-              cell.transform = CGAffineTransform(scaleX: 2, y: 2)
-        }
-        
-        for cell in cells {
-            //            cell.transform = CGAffineTransform(translationX: 0, y: tableViewHeight)
-            cell.transform = CGAffineTransform(scaleX: -2, y: -2)
-        }
-        
-        var delayCounter = 0
-        for cell in cells {
-            UIView.animate(withDuration: 1.25, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                cell.transform = CGAffineTransform.identity
-            }, completion: nil)
-            delayCounter += 1
-        }
-    }
-    
-    func animateTableAfterFilter() {
-        self.tableView.reloadData()
-        let cells = tableView.visibleCells
-        
-        let tableViewWidth = tableView.bounds.size.width
-        
-        for cell in cells {
-            cell.transform = CGAffineTransform(translationX: tableViewWidth, y: 0)
-        }
-        
-        var delayCounter = 0
-        for cell in cells {
-            UIView.animate(withDuration: 0.75, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                cell.transform = CGAffineTransform.identity
-            }, completion: nil)
-            delayCounter += 1
-        }
-    }
-    
 }
 
 

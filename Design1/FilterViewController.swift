@@ -61,7 +61,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     var sortBySelected:String = ""
     
-    
     var distanceDropDown = false
     var sortByDropDown = false
     var categoryDropDown = false
@@ -91,7 +90,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.animateTable()
+        self.tableView.animateTableAfterFilter()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -140,7 +139,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             cell.switchLabel?.text = self.offeringArray[indexPath.row]
             return cell
         case sectionName[1]:
-            
             if indexPath.row == 0 && distanceDropDown == false {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "dropCell") as! DropTableViewCell
                 cell.dropLabel?.text = self.distanceArrayUpdated[indexPath.row]
@@ -160,7 +158,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "circleCell") as! CircleTableViewCell
                 cell.circleDelegate = self
-                cell.circleLabel?.text = self.sortByArrayUpdated[indexPath.row]
+                cell.circleLabel?.text = self.sortByArray[indexPath.row]
                 cell.type = .sortBy
                 return cell
             }
@@ -247,7 +245,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     @objc func search() {
-
         back()
         self.filterDelegate?.didReceiveSwitchData(switchSelected: switchCategorySelected)
         self.filterDelegate?.didReceiveDistanceData(distanceSelected: newDistanceString)
@@ -256,7 +253,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     @objc func back() {
         _ = navigationController?.popViewController(animated: true)
-
     }
     
     func mySwitchTapped(cell: SwitchTableViewCell, switchLabel: String) {
@@ -273,25 +269,6 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
             self.newDistanceString = string
         } else {
             self.newSortByString = string
-        }
-    }
-    
-    func animateTable() {
-        self.tableView.reloadData()
-        let cells = tableView.visibleCells
-        
-        let tableViewWidth = tableView.bounds.size.width
-        
-        for cell in cells {
-            cell.transform = CGAffineTransform(translationX: tableViewWidth, y: 0)
-        }
-        
-        var delayCounter = 0
-        for cell in cells {
-            UIView.animate(withDuration: 0.5, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                cell.transform = CGAffineTransform.identity
-            }, completion: nil)
-            delayCounter += 1
         }
     }
     

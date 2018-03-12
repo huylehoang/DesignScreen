@@ -19,5 +19,7 @@ target 'Design1' do
 
   pod ‘AFNetworking’, ‘~> 2.5’
   pod 'BDBOAuth1Manager', '1.6.0'
+  pod 'Alamofire', '~> 4.7.0'
+  pod 'AlamofireImage', '~> 3.3.0'
 
 end
